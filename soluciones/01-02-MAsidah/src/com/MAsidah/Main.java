@@ -68,7 +68,7 @@ public class Main {
      * @return
      */
     static int minimoMatriz(int[][] matriz, int filas, int columnas){
-        int minimo = 0;
+        int minimo = matriz[0][0];
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 if(matriz[i][j] < minimo)
