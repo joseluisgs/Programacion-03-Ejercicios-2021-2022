@@ -7,9 +7,9 @@ public class Main {
 
     public static void main(String[] args) {
         //Variables del juego:
-        final int numeroIntentos = 3;
+        final int numeroIntentosMaximo = 3;
 
-        //Creaccion de Scanner
+        //Creación de Scanner
         Scanner sc = new Scanner(System.in);
 
         //Indicamos el tamaño que va a tener nuestro tablero
@@ -24,7 +24,7 @@ public class Main {
         initTablero(tablero,tamanoTablero,posicionMosca);
 
         //Desarrollo del juego
-        inicioJuego(sc, tamanoTablero, posicionMosca, tablero, numeroIntentos);
+        inicioJuego(sc, tamanoTablero, posicionMosca, tablero, numeroIntentosMaximo);
     }
 
     public static void imprimirMatrizBoolean(boolean[][] matriz) {
@@ -32,12 +32,11 @@ public class Main {
             System.out.println(Arrays.toString(matriz[i]));
     }
 
-
     public static void inicioJuego(Scanner sc, int tamanoTablero, int[] posicionMosca, boolean[][] tablero, int numeroIntentos) {
         boolean continuarJugando = true;
-        int intentosGastados = 0;
+        int intentosActuales = 0;
         boolean moscaCazada = false;
-        while (continuarJugando && intentosGastados < numeroIntentos && !moscaCazada) {
+        while (continuarJugando && intentosActuales < numeroIntentos && !moscaCazada) {
             imprimirMatrizBoolean(tablero);
             //pedimos una posición
             int posicionI = pedirPosicionI(tamanoTablero, sc);
@@ -46,26 +45,26 @@ public class Main {
             moscaCazada = tablero[posicionI][posicionJ];
             if (!moscaCazada) {
                 //ver si ha pegado cerca
-                boolean mosca_cerca = false;
-                for (int i = posicionI - 1; i <= posicionI + 1 && !mosca_cerca; i++) {
-                    for (int j = posicionJ - 1; j <= posicionJ + 1 && !mosca_cerca; j++) {
+                boolean moscaProxima = false;
+                for (int i = posicionI - 1; i <= posicionI + 1 && !moscaProxima; i++) {
+                    for (int j = posicionJ - 1; j <= posicionJ + 1 && !moscaProxima; j++) {
                         //comprobamos que i y j no se salen del tamaño de la matriz
                         if (i >= 0 && i < tamanoTablero && j >= 0 && j < tamanoTablero) {
-                            mosca_cerca = tablero[i][j];
+                            moscaProxima = tablero[i][j];
                         }
                     }
                 }
-                if (mosca_cerca) {
+                if (moscaProxima) {
                     getposicionMosca(tamanoTablero, posicionMosca);
                     initTablero(tablero,tamanoTablero,posicionMosca);
                     System.out.println("La mosca estaba cerca y se ha ido revoloteando");
                 } else {
-                    System.out.println("La mosca pegaba algo lejos");
+                    System.out.println("La mosca estaba lejos");
                 }
-                intentosGastados++;
+                intentosActuales++;
                 //pedir si quiere seguir jugando si le quedan intentos
-                if (intentosGastados < numeroIntentos) {
-                    System.out.println("Te quedan " + (numeroIntentos - intentosGastados) + ". ¿Deseas seguir intentándolo, cracken? (y/n)");
+                if (intentosActuales < numeroIntentos) {
+                    System.out.println("Te quedan " + (numeroIntentos - intentosActuales) + ". ¿Deseas seguir intentándolo? (y/n)");
                     String respuesta = sc.nextLine();
                     continuarJugando = respuesta.equals("y") || respuesta.equals("Y");
                 }
@@ -74,7 +73,7 @@ public class Main {
         if (moscaCazada) {
             //la mosca ha sido cazada
             System.out.println("Enhorabuena!, te has cargado la mosca");
-        } else if (intentosGastados >= numeroIntentos) {
+        } else if (intentosActuales >= numeroIntentos) {
             //no hay más intentos
             System.out.println("Ooooo, se te han acabado los intentos :(");
         } else {
@@ -135,7 +134,7 @@ public class Main {
             tamanoTablero = sc.nextInt();
             sc.nextLine();
             return tamanoTablero;
-        } catch (Exception ex) {
+        } catch (Exception e) {
             System.out.println("!!NOOOOOOOO!! Recuerda que tienes que poner un número :/");
             sc.nextLine();
             return escaneaNumero(sc);
