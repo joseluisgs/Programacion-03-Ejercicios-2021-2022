@@ -72,12 +72,8 @@ public class Main {
             //Ya que los números --> 8, 9 y 10 cuentan como medio punto y el resto como un punto hacemos un switch
                 switch(numberCard){
                     case 8:
-                        resultCard = resultCard + 0.5;
-                        break;
 
                     case 9:
-                        resultCard = resultCard + 0.5;
-                        break;
 
                     case 10:
                         resultCard = resultCard + 0.5;
