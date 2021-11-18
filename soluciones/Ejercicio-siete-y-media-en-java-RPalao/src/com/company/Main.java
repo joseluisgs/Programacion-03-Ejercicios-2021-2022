@@ -45,7 +45,7 @@ public class Main {
             //Seguir jugando
             tryAgain = canTryAgain(money);
 
-        }while(tryAgain.equals("si") && money > 0 );
+        }while((tryAgain.equals("si")||tryAgain.equals("Si")) && money > 0 );
     }
 
     //Funciones
@@ -58,45 +58,84 @@ public class Main {
         public static double canPlayingCard() {
             //Scanner
             Scanner sc = new Scanner(System.in);
+
             //Variables de la funcion
             String playingCard;
-            int numberCard;
+            int numberCardFila;
+            int numberCardColumna;
             double resultCard = 0;
+
+            //Matriz de la baraja de cartas
+            int [][] baraja= new int[4][10];
+
+
             //Inicio
         do{
             System.out.println("Quieres carta (si/no): ");
             playingCard = sc.nextLine();
-            if(playingCard.equals("si")){
-                numberCard = (int) Math.round(Math.random()*10+1);
+            System.out.println();
 
-            //Ya que los números --> 8, 9 y 10 cuentan como medio punto y el resto como un punto hacemos un switch
-                switch(numberCard){
-                    case 8:
 
-                    case 9:
+            //Carta aleatoria
 
-                    case 10:
-                        resultCard = resultCard + 0.5;
-                        break;
+            if(playingCard.equals("si")||playingCard.equals("Si")){
+                numberCardColumna = (int) Math.floor(Math.random()*10);
+                numberCardFila= (int) Math.floor(Math.random()*4);
 
-                    default:
-                        resultCard = resultCard + 1;
-                        break;
+            //Los números --> 8, 9 y 10 cuentan como medio punto y el resto como un punto.
+            //Vamos dando la vuelta a las cartas ya levantadas hacemos un if para no volver a levantar las que ya están levantadas.
+
+            if (baraja[numberCardFila][numberCardColumna]==1){
+                numberCardColumna = (int) Math.round(Math.random()*10);
+                numberCardFila= (int) Math.floor(Math.random()*4);
+
+            }else {
+                    //Valor de las cartas
+                    switch (numberCardColumna) {
+                        case 7:
+
+                        case 8:
+
+                        case 9:
+                            resultCard = resultCard + 0.5;
+                            break;
+
+                        default:
+                            resultCard = resultCard + 1;
+                            break;
+                    }
                 }
+
+                baraja[numberCardFila][numberCardColumna]=1;
+                canPrint(baraja);
+                System.out.println();
+
             }
 
             System.out.println("Llevas un total de: " + resultCard);
-        }while(playingCard.equals("si"));
+        }while(playingCard.equals("si")||playingCard.equals("Si"));
         return resultCard;
     }
 
 
+    private static void canPrint(int[][] baraja) {
+            System.out.println();
+            for (int i=0; i< baraja.length; i++){
+                System.out.print("{ ");
+                for (int j=0; j< baraja[i].length; j++){
+                    System.out.print(baraja[i][j] + " ");
+                }
+                System.out.println(" }");
+            }
+    }
+
+
     /**
-     * Funcion que devuelve el dinero dependiendo de si ha ganado o perdido la apuesta
-     * @param resultCard Nos dice si ha ganado el juego o no
+     * Funcion que devuelve el dinero dependiendo de si ha ganado o perdido la apuesta.
+     * @param resultCard Nos dice si ha ganado el juego o no.
      * @param moneyUser Nos dice el dinero que tiene.
-     * @param betUser Nos dice la apuesta
-     * @returns el dinero que hay por haber ganado o perdido
+     * @param betUser Nos dice la apuesta.
+     * @returns El dinero que hay por haber ganado o perdido.
      */
 
     public static int isWinner(double resultCard, int moneyUser, int betUser) {
@@ -124,7 +163,7 @@ public class Main {
         String tryAgainUser;
         System.out.println("Quiere volver a jugar (si/no): ");
         tryAgainUser = sc.nextLine();
-        if (tryAgainUser.equals("si") && (moneyUser == 0)){
+        if ((tryAgainUser.equals("si")||tryAgainUser.equals("Si")) && (moneyUser == 0)){
             System.out.println("No puedes volver a jugar ya que tu saldo es 0 :(");
         }
         return tryAgainUser;
